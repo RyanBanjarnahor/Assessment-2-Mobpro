@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -150,6 +151,7 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
                     ListItem(paket = it) {
                         navController.navigate(Screen.FormUbah.withId(it.id))
                     }
+                    HorizontalDivider()
                 }
             }
         } else {
@@ -162,8 +164,8 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
             ) {
                 items(data) {
                     GridItem(paket = it) {
+                        navController.navigate(Screen.FormUbah.withId(it.id))
                     }
-                    navController.navigate(Screen.FormUbah.withId(it.id))
                 }
             }
         }
@@ -196,7 +198,7 @@ fun ListItem(paket: Paket, onClick: () -> Unit) {
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = paket.tanggal)
+        Text(text = paket.tanggal, fontWeight = FontWeight.Bold)
     }
 }
 
@@ -228,10 +230,10 @@ fun GridItem(paket: Paket, onClick: () -> Unit) {
             )
             Text(
                 text = paket.alamat,
-                maxLines = 4,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            Text(text = paket.tanggal)
+            Text(text = paket.tanggal, fontWeight = FontWeight.Bold)
         }
     }
 }
