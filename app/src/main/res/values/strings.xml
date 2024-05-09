@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Asessment2</string>
-
+    <string name="app_name">SiPaket</string>
 
     <!--  STRING DISPLAY ALERT  -->
     <string name="pesan_hapus">Hapus Data Paket Ini?</string>
@@ -19,16 +18,15 @@
     <string name="tambah_paket">Tambah Paket</string>
     <string name="edit_paket">Ubah Paket</string>
 
-    <string name="nama">Judul</string>
-    <string name="isi_paket">Isi Catatan</string>
-    <string name="alamat">Isi Catatan</string>
+    <string name="nama">Nama Penerima</string>
+    <string name="alamat">Alamat</string>
 
     <string name="kembali">Kembali</string>
     <string name="simpan">Simpan</string>
 
-    <string name="invalid">Judul dan isi catatan tidak boleh kosong.</string>
+    <string name="invalid">Nama, Jenis Paket dan Alamat tidak boleh kosong.</string>
     <string name="lainnya">Opsi Lainnya.</string>
-    <string name="hapus">Hapus Catatan</string>
+    <string name="hapus">Hapus Paket</string>
 
 
 </resources>

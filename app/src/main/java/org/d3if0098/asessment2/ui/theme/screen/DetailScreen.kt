@@ -2,15 +2,23 @@ package org.d3if0098.asessment2.ui.theme.screen
 
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -28,9 +37,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,6 +58,8 @@ import org.d3if0098.asessment2.util.ViewModelFactory
 
 const val KEY_ID_PAKET = "idPaket"
 
+val items = listOf("Elektronik", "Pakaian", "Makanan", "Surat")
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(navController: NavHostController, id: Long? = null) {
@@ -56,6 +71,8 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
     var nama by remember { mutableStateOf("") }
     var paket by remember { mutableStateOf("") }
     var alamat by remember { mutableStateOf("") }
+
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(true) {
         if (id == null) return@LaunchedEffect
@@ -89,7 +106,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                 ),
                 actions = {
                     IconButton(onClick = {
-                        if (nama == "" || paket == "" || alamat == ""){
+                        if (nama == "" || paket == "" || alamat == "") {
                             Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
                             return@IconButton
                         }
@@ -102,13 +119,17 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                         navController.popBackStack()
                     }) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.kembali),
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = stringResource(R.string.simpan),
                             tint = MaterialTheme.colorScheme.primary
                         )
                     }
                     if (id != null) {
-                        DeleteAction {
+                        DeleteAction { showDialog = true }
+                        DisplayAlertDialog(
+                            openDialog = showDialog,
+                            onDismissRequest = { showDialog = false }) {
+                            showDialog = false
                             viewModel.delete(id)
                             navController.popBackStack()
                         }
@@ -122,6 +143,8 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
             onTitleChange = { nama = it },
             desc = paket,
             onDescChange = { paket = it },
+            addr = alamat,
+            onAddrChange = { alamat = it },
             modifier = Modifier.padding(padding)
         )
     }
@@ -158,8 +181,18 @@ fun DeleteAction (delete: () -> Unit){
 fun FormPaket(
     title: String, onTitleChange: (String) -> Unit,
     desc: String, onDescChange: (String) -> Unit,
+    addr: String, onAddrChange: (String) -> Unit,
     modifier : Modifier
 ) {
+
+    Box(modifier = Modifier.fillMaxSize()){
+        Image(
+            painter = painterResource(id = R.drawable.bg),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize().padding(top = 36.dp)
+        )
+    }
+
     Column (
         modifier = modifier
             .fillMaxSize()
@@ -177,25 +210,57 @@ fun FormPaket(
             ),
             modifier = Modifier.fillMaxWidth()
         )
+        Column(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
+        ) {
+            items.forEach { text ->
+                RadioOptions(
+                    label = text,
+                    isSelected = desc == text,
+                    modifier = Modifier
+                        .selectable(
+                            selected = desc == text,
+                            onClick = { onDescChange(text) },
+                            role = Role.RadioButton
+                        )
+                        .padding(8.dp), onDescChange
+                )
+            }
+        }
         OutlinedTextField(
-            value = desc,
-            onValueChange = { onDescChange(it) },
-            label = { Text(text = stringResource(R.string.isi_paket)) },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences
-            ),
-            modifier = Modifier.fillMaxSize()
-        )
-        OutlinedTextField(
-            value = desc,
-            onValueChange = { onDescChange(it) },
+            value = addr,
+            onValueChange = { onAddrChange(it) },
             label = { Text(text = stringResource(R.string.alamat)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences
+                capitalization = KeyboardCapitalization.Sentences,
+                imeAction = ImeAction.Done
             ),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.4f)
+        )
+    }
+}
+
+@Composable
+fun RadioOptions(
+    label: String,
+    isSelected: Boolean,
+    modifier: Modifier,
+    onKelasChange: (String) -> Unit
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = isSelected, onClick = { onKelasChange(label) })
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(8.dp)
         )
     }
 }
