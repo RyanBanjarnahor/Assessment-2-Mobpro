@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Asessment2</string>
+
+
+    <!--  STRING DISPLAY ALERT  -->
+    <string name="pesan_hapus">Hapus Data Paket Ini?</string>
+    <string name="tombol_hapus">Hapus</string>
+    <string name="tombol_batal">Batal</string>
+
+    <string name="list_kosong">Belum ada data</string>
+    <string name="x_diklik">%1$s diklik!</string>
+
+
+    <string name="tambah_paket">Tambah Paket</string>
+    <string name="edit_paket">Ubah Paket</string>
+
+    <string name="nama">Judul</string>
+    <string name="isi_paket">Isi Catatan</string>
+    <string name="alamat">Isi Catatan</string>
+
+    <string name="kembali">Kembali</string>
+    <string name="simpan">Simpan</string>
+
+    <string name="invalid">Judul dan isi catatan tidak boleh kosong.</string>
+    <string name="lainnya">Opsi Lainnya.</string>
+    <string name="hapus">Hapus Catatan</string>
+
+
+</resources>
