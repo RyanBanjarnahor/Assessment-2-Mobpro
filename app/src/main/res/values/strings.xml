@@ -7,6 +7,11 @@
     <string name="tombol_hapus">Hapus</string>
     <string name="tombol_batal">Batal</string>
 
+    <!--  STRING LIST AND GRID  -->
+    <string name="grid">Tampilan Grid</string>
+    <string name="list">Tampilan List</string>
+
+
     <string name="list_kosong">Belum ada data</string>
     <string name="x_diklik">%1$s diklik!</string>
 
