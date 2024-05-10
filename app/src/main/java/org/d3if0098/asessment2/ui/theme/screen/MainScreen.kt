@@ -5,12 +5,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -65,7 +66,7 @@ fun MainScreen(navController: NavHostController) {
     val showList by dataStore.layoutFlow.collectAsState(true)
 
 
-    Scaffold (
+    Scaffold(
         topBar = {
             TopAppBar(
                 title = {
@@ -115,31 +116,36 @@ fun MainScreen(navController: NavHostController) {
 }
 
 @Composable
-fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostController){
+fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostController) {
     val context = LocalContext.current
     val db = PaketDb.getInstance(context)
     val factory = ViewModelFactory(db.dao)
     val viewModel: MainViewModel = viewModel(factory = factory)
     val data by viewModel.data.collectAsState()
 
-    if (data.isEmpty()){
-        Column (
+    if (data.isEmpty()) {
+        Column(
             modifier = modifier
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Image(
+                painter = painterResource(id = R.drawable.box),
+                contentDescription = null,
+                modifier = Modifier.widthIn(max = LocalConfiguration.current.screenWidthDp.dp * 0.4f)
+            )
             Text(text = stringResource(id = R.string.list_kosong))
         }
-    }
-    else {
-        if (showList){
-            LazyColumn (
+    } else {
+        if (showList) {
+            LazyColumn(
                 modifier = modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 84.dp)
-            ){
-                items(data){
+            ) {
+                items(data) {
                     ListItem(paket = it) {
                         navController.navigate(Screen.FormUbah.withId(it.id))
                     }
@@ -167,7 +173,7 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
 
 @Composable
 fun ListItem(paket: Paket, onClick: () -> Unit) {
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
@@ -193,8 +199,9 @@ fun ListItem(paket: Paket, onClick: () -> Unit) {
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = paket.tanggal, fontWeight = FontWeight.Bold,
-                color = Color.White
+        Text(
+            text = paket.tanggal, fontWeight = FontWeight.Bold,
+            color = Color.White
         )
     }
 }
@@ -234,7 +241,6 @@ fun GridItem(paket: Paket, onClick: () -> Unit) {
         }
     }
 }
-
 
 
 @Preview(showBackground = true)
