@@ -122,14 +122,6 @@ fun ScreenContent(showList: Boolean, modifier: Modifier, navController: NavHostC
     val viewModel: MainViewModel = viewModel(factory = factory)
     val data by viewModel.data.collectAsState()
 
-    Box(modifier = Modifier.fillMaxSize()){
-        Image(
-            painter = painterResource(id = R.drawable.bg),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-
     if (data.isEmpty()){
         Column (
             modifier = modifier
@@ -184,21 +176,26 @@ fun ListItem(paket: Paket, onClick: () -> Unit) {
     ) {
         Text(
             text = paket.nama,
+            color = Color.White,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Bold
         )
         Text(
             text = paket.paket,
+            color = Color.White,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
         Text(
             text = paket.alamat,
+            color = Color.White,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = paket.tanggal, fontWeight = FontWeight.Bold)
+        Text(text = paket.tanggal, fontWeight = FontWeight.Bold,
+                color = Color.White
+        )
     }
 }
 

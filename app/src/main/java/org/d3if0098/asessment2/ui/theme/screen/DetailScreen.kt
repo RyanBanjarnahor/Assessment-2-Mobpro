@@ -3,6 +3,7 @@ package org.d3if0098.asessment2.ui.theme.screen
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -185,13 +186,13 @@ fun FormPaket(
     modifier : Modifier
 ) {
 
-    Box(modifier = Modifier.fillMaxSize()){
-        Image(
-            painter = painterResource(id = R.drawable.bg),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize().padding(top = 36.dp)
-        )
-    }
+//    Box(modifier = Modifier.fillMaxSize()){
+//        Image(
+//            painter = painterResource(id = R.drawable.bg),
+//            contentDescription = null,
+//            modifier = Modifier.fillMaxSize().padding(top = 36.dp)
+//        )
+//    }
 
     Column (
         modifier = modifier
